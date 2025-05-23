@@ -3,10 +3,14 @@ import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ChartConfiguration, ChartOptions } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
+import {
+  AbesseTableComponent,
+  IAbesseTableColumn,
+} from './common/abesse-table/abesse-table.component';
 
 @Component({
   selector: 'app-root',
-  imports: [BaseChartDirective, FormsModule, NgClass],
+  imports: [BaseChartDirective, FormsModule, NgClass, AbesseTableComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
@@ -27,19 +31,31 @@ export class AppComponent {
 
   isTimeShowSignal = signal(false);
 
-  randomDataList: { title: string; price: number; model: string }[] = [
-    { title: 'Title1', price: 42, model: 'Ford Capri' },
-    { title: 'Title2', price: 42, model: 'Ford Capri' },
-    { title: 'Title3', price: 42, model: 'Ford Capri' },
-    { title: 'Title', price: 42, model: 'Ford Capri' },
-    { title: 'Title', price: 42, model: 'Ford Capri' },
-    { title: 'Title', price: 42, model: 'Ford Capri' },
-    { title: 'Title', price: 42, model: 'Ford Capri' },
-    { title: 'Title', price: 42, model: 'Ford Capri' },
-    { title: 'Title', price: 42, model: 'Ford Capri' },
-    { title: 'Title', price: 42, model: 'Ford Capri' },
-    { title: 'Title', price: 42, model: 'Ford Capri' },
-    { title: 'Title', price: 42, model: 'Ford Capri' },
+  randomDataList: {
+    id: number;
+    title: string;
+    price: number;
+    model: string;
+  }[] = [
+    { id: 1, title: 'Title1', price: 42, model: 'Ford Capri' },
+    { id: 2, title: 'Title2', price: 42, model: 'Ford Capri' },
+    { id: 3, title: 'Title3', price: 42, model: 'Ford Capri' },
+    { id: 4, title: 'Title', price: 42, model: 'Ford Capri' },
+    { id: 5, title: 'Title', price: 42, model: 'Ford Capri' },
+    { id: 6, title: 'Title', price: 42, model: 'Ford Capri' },
+    { id: 7, title: 'Title', price: 42, model: 'Ford Capri' },
+    { id: 8, title: 'Title', price: 42, model: 'Ford Capri' },
+    { id: 9, title: 'Title', price: 42, model: 'Ford Capri' },
+    { id: 10, title: 'Title', price: 42, model: 'Ford Capri' },
+    { id: 11, title: 'Title', price: 42, model: 'Ford Capri' },
+    { id: 12, title: 'Title', price: 42, model: 'Ford Capri' },
+  ];
+
+  columns: IAbesseTableColumn[] = [
+    { key: 'id', title: '#' },
+    { key: 'title', title: 'Title' },
+    { key: 'price', title: 'Price' },
+    { key: 'model', title: 'Model' },
   ];
 
   tableClasses = signal({
