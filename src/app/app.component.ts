@@ -1,5 +1,5 @@
 import { NgClass } from '@angular/common';
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ChartConfiguration, ChartOptions } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
@@ -7,14 +7,26 @@ import {
   AbesseTableComponent,
   IAbesseTableColumn,
 } from './common/abesse-table/abesse-table.component';
+import { CinemaService } from './service/cinema.service';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { Cinema } from './model/cinema';
 
 @Component({
   selector: 'app-root',
-  imports: [BaseChartDirective, FormsModule, NgClass, AbesseTableComponent],
+  imports: [BaseChartDirective, FormsModule, AbesseTableComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
 export class AppComponent {
+  cinemaService = inject(CinemaService);
+
+  cinemaListSignal = toSignal(this.cinemaService.getAll());
+
+  cinemaColumns = Object.keys(new Cinema()).map((key) => ({
+    key,
+    title: key.charAt(0).toUpperCase() + key.slice(1),
+  }));
+
   title = 'Abesse Dashboard';
 
   time = '';
