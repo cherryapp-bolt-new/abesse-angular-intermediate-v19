@@ -1,15 +1,28 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { ChartConfiguration, ChartOptions } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
 
 @Component({
   selector: 'app-root',
-  imports: [BaseChartDirective],
+  imports: [BaseChartDirective, FormsModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
 export class AppComponent {
-  title = 'abesse-angular-basic-v19';
+  title = 'Abesse Dashboard';
+
+  time = '';
+
+  timeSignal = signal('');
+
+  btnClassSignal = signal('plain');
+
+  btnClass = 'plain';
+
+  searchPhrase = 'banana in the box';
+
+  searchPhraseSignal = signal<string>('monkey');
 
   public lineChartData: ChartConfiguration<'line'>['data'] = {
     labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
@@ -30,4 +43,20 @@ export class AppComponent {
   };
 
   public lineChartLegend = true;
+
+  constructor() {
+    setInterval(() => {
+      const currentDate = new Date();
+      this.time = `${currentDate.getHours()}:${currentDate.getMinutes()}:${currentDate.getSeconds()}`;
+      this.timeSignal.set(this.time);
+    }, 1000);
+  }
+
+  toggleClass() {
+    this.btnClassSignal.update((className) =>
+      className === 'plain' ? 'selected' : 'plain'
+    );
+
+    this.btnClass = this.btnClass === 'plain' ? 'selected' : 'plain';
+  }
 }
