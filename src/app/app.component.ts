@@ -1,3 +1,4 @@
+import { NgClass } from '@angular/common';
 import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ChartConfiguration, ChartOptions } from 'chart.js';
@@ -5,7 +6,7 @@ import { BaseChartDirective } from 'ng2-charts';
 
 @Component({
   selector: 'app-root',
-  imports: [BaseChartDirective, FormsModule],
+  imports: [BaseChartDirective, FormsModule, NgClass],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
@@ -23,6 +24,28 @@ export class AppComponent {
   searchPhrase = 'banana in the box';
 
   searchPhraseSignal = signal<string>('monkey');
+
+  isTimeShowSignal = signal(false);
+
+  randomDataList: { title: string; price: number; model: string }[] = [
+    { title: 'Title1', price: 42, model: 'Ford Capri' },
+    { title: 'Title2', price: 42, model: 'Ford Capri' },
+    { title: 'Title3', price: 42, model: 'Ford Capri' },
+    { title: 'Title', price: 42, model: 'Ford Capri' },
+    { title: 'Title', price: 42, model: 'Ford Capri' },
+    { title: 'Title', price: 42, model: 'Ford Capri' },
+    { title: 'Title', price: 42, model: 'Ford Capri' },
+    { title: 'Title', price: 42, model: 'Ford Capri' },
+    { title: 'Title', price: 42, model: 'Ford Capri' },
+    { title: 'Title', price: 42, model: 'Ford Capri' },
+    { title: 'Title', price: 42, model: 'Ford Capri' },
+    { title: 'Title', price: 42, model: 'Ford Capri' },
+  ];
+
+  tableClasses = signal({
+    'table-sm': true,
+    'table-striped': true,
+  });
 
   public lineChartData: ChartConfiguration<'line'>['data'] = {
     labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
@@ -58,5 +81,20 @@ export class AppComponent {
     );
 
     this.btnClass = this.btnClass === 'plain' ? 'selected' : 'plain';
+  }
+
+  toggleTimer() {
+    this.isTimeShowSignal.update((v) => !v);
+  }
+
+  showDataRow(row: any): void {
+    console.log(row);
+  }
+
+  toggleTableClasses(): void {
+    this.tableClasses.update((classes) => ({
+      ...classes,
+      'table-sm': !classes['table-sm'],
+    }));
   }
 }
