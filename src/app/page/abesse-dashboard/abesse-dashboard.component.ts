@@ -1,25 +1,22 @@
-import { NgClass } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { Cinema } from '../../model/cinema';
+import { CinemaService } from '../../service/cinema.service';
 import { FormsModule } from '@angular/forms';
-import { ChartConfiguration, ChartOptions } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
 import {
   AbesseTableComponent,
   IAbesseTableColumn,
-} from './common/abesse-table/abesse-table.component';
-import { CinemaService } from './service/cinema.service';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { Cinema } from './model/cinema';
-import { HeaderComponent } from './common/header/header.component';
-import { AbesseSidebarComponent } from './common/abesse-sidebar/abesse-sidebar.component';
+} from '../../common/abesse-table/abesse-table.component';
+import { ChartConfiguration, ChartOptions } from 'chart.js';
 
 @Component({
-  selector: 'app-root',
-  imports: [FormsModule, HeaderComponent, AbesseSidebarComponent],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.css',
+  selector: 'abesse-dashboard',
+  imports: [BaseChartDirective, FormsModule, AbesseTableComponent],
+  templateUrl: './abesse-dashboard.component.html',
+  styleUrl: './abesse-dashboard.component.css',
 })
-export class AppComponent {
+export class AbesseDashboardComponent {
   cinemaService = inject(CinemaService);
 
   cinemaListSignal = toSignal(this.cinemaService.getAll());
@@ -31,19 +28,9 @@ export class AppComponent {
 
   title = 'Abesse Dashboard';
 
-  time = '';
-
-  timeSignal = signal('');
-
   btnClassSignal = signal('plain');
 
   btnClass = 'plain';
-
-  searchPhrase = 'banana in the box';
-
-  searchPhraseSignal = signal<string>('monkey');
-
-  isTimeShowSignal = signal(false);
 
   randomDataList: {
     id: number;
@@ -97,16 +84,10 @@ export class AppComponent {
 
   public lineChartLegend = true;
 
-  constructor() {
-    setInterval(() => {
-      const currentDate = new Date();
-      this.time = `${currentDate.getHours()}:${currentDate.getMinutes()}:${currentDate.getSeconds()}`;
-      this.timeSignal.set(this.time);
-    }, 1000);
-  }
+  constructor() {}
 
   toggleClass() {
-    this.btnClassSignal.update((className) =>
+    this.btnClassSignal.update((className: string) =>
       className === 'plain' ? 'selected' : 'plain'
     );
 
@@ -114,7 +95,7 @@ export class AppComponent {
   }
 
   toggleTimer() {
-    this.isTimeShowSignal.update((v) => !v);
+    // this.isTimeShowSignal.update((v) => !v);
   }
 
   showDataRow(row: any): void {
