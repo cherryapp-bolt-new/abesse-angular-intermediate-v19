@@ -12,10 +12,11 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { Cinema } from './model/cinema';
 import { HeaderComponent } from './common/header/header.component';
 import { AbesseSidebarComponent } from './common/abesse-sidebar/abesse-sidebar.component';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-root',
-  imports: [FormsModule, HeaderComponent, AbesseSidebarComponent],
+  imports: [FormsModule, HeaderComponent, AbesseSidebarComponent, RouterModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })

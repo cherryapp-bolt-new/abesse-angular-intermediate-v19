@@ -15,4 +15,8 @@ export abstract class BaseService<T> {
   getAll(): Observable<T[]> {
     return this.http.get<T[]>(this.apiUrl + this.entityName);
   }
+
+  get(id: number): Observable<T> {
+    return this.http.get<T>(this.apiUrl + this.entityName + '/' + id);
+  }
 }

@@ -9,6 +9,7 @@ import {
   IAbesseTableColumn,
 } from '../../common/abesse-table/abesse-table.component';
 import { ChartConfiguration, ChartOptions } from 'chart.js';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'abesse-dashboard',
@@ -18,6 +19,8 @@ import { ChartConfiguration, ChartOptions } from 'chart.js';
 })
 export class AbesseDashboardComponent {
   cinemaService = inject(CinemaService);
+
+  router = inject(Router);
 
   cinemaListSignal = toSignal(this.cinemaService.getAll());
 
@@ -99,7 +102,7 @@ export class AbesseDashboardComponent {
   }
 
   showDataRow(row: any): void {
-    console.log(row);
+    this.router.navigate(['/cinema-editor', row.id]);
   }
 
   toggleTableClasses(): void {
