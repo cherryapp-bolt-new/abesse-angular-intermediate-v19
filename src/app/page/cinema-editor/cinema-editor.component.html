@@ -1,1 +1,43 @@
-<p>cinema-editor works!</p>
+<div class="col-12 col-md-6 col-lg-3 mx-auto">
+  <h2>Edit Movie</h2>
+  <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+    <div class="mb-3">
+      <label for="title" class="form-label">Title</label>
+      <input pattern="^[a-zA-Z ]{5,15}" type="text" class="form-control" id="title" formControlName="title">
+      @if (formGroup.controls.title.errors) {
+      <div class="alert alert-danger">
+        The title must be minimum 5 cars.
+      </div>
+      }
+    </div>
+    <div class="mb-3">
+      <label for="genre" class="form-label">Genre</label>
+      <input type="text" class="form-control" id="genre" formControlName="genre">
+    </div>
+    <div class="mb-3">
+      <label for="director" class="form-label">Director</label>
+      <input type="text" class="form-control" id="director" formControlName="director">
+    </div>
+    <div class="mb-3">
+      <label for="releaseYear" class="form-label">Release Year</label>
+      <input type="number" class="form-control" id="releaseYear" formControlName="releaseYear">
+    </div>
+    <div class="mb-3">
+      <label for="poster" class="form-label">Poster</label>
+      <input type="text" class="form-control" id="poster" formControlName="poster">
+    </div>
+    <div class="mb-3">
+      <label for="studio" class="form-label">Studio</label>
+      <input type="text" class="form-control" id="studio" formControlName="studio">
+    </div>
+    <div class="mb-3 form-check">
+      <input type="checkbox" class="form-check-input" id="active" formControlName="active">
+      <label class="form-check-label" for="active">Active</label>
+    </div>
+    <button [disabled]="formGroup.invalid" type="submit" class="btn btn-primary">Submit</button>
+
+    @if (httpError()) {
+    <div class="alert alert-danger">Update failed: {{ httpError() }}</div>
+    }
+  </form>
+</div>

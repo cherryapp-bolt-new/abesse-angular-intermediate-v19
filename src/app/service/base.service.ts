@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
-export abstract class BaseService<T> {
+export abstract class BaseService<T extends { id: number }> {
   http = inject(HttpClient);
 
   apiUrl = 'https://nettuts.hu/jms/cherryApp/';
@@ -18,5 +18,12 @@ export abstract class BaseService<T> {
 
   get(id: number): Observable<T> {
     return this.http.get<T>(this.apiUrl + this.entityName + '/' + id);
+  }
+
+  update(entity: T): Observable<T> {
+    return this.http.patch<T>(
+      this.apiUrl + this.entityName + '/' + entity.id,
+      entity
+    );
   }
 }
