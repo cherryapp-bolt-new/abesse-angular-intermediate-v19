@@ -27,10 +27,6 @@ export const joeInterceptor: HttpInterceptorFn = (req, next) => {
   return next(newRequest).pipe(
     // Cache the response if it's a GET request
     filter((x) => x instanceof HttpResponse),
-    map((response) => {
-      throw new Error('test');
-      return response;
-    }),
     tap((response) => {
       if (req.method === 'GET') {
         const cacheKey = req.urlWithParams;

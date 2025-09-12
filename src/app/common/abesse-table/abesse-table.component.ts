@@ -1,5 +1,12 @@
 import { NgClass } from '@angular/common';
-import { Component, input, output, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  input,
+  output,
+  signal,
+} from '@angular/core';
+import { CryptoPipe } from '../../pipe/crypto.pipe';
 
 export interface IAbesseTableColumn {
   key: string;
@@ -8,9 +15,10 @@ export interface IAbesseTableColumn {
 
 @Component({
   selector: 'abesse-table',
-  imports: [NgClass],
+  imports: [NgClass, CryptoPipe],
   templateUrl: './abesse-table.component.html',
   styleUrl: './abesse-table.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AbesseTableComponent<T extends { [k: string]: any; id: number }> {
   dataList = input.required<T[]>();
@@ -24,6 +32,8 @@ export class AbesseTableComponent<T extends { [k: string]: any; id: number }> {
   btnClassSignal = signal('plain');
 
   btnClass = 'plain';
+
+  searchPhrase = signal<string>('');
 
   tableClasses = signal({
     'table-sm': true,
@@ -47,5 +57,9 @@ export class AbesseTableComponent<T extends { [k: string]: any; id: number }> {
 
   showDataRow(row: any): void {
     console.log(row);
+  }
+
+  myTrigger() {
+    console.log('triggered');
   }
 }

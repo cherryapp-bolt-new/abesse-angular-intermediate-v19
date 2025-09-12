@@ -1,9 +1,15 @@
 <div class="row">
   <div class="col-10">
-    <h2>Section title</h2>
+    <h2>Data table</h2>
   </div>
   <div class="col-2">
     <button (click)="toggleTableClasses()" type="button" class="btn btn-secondary btn-sm">normal view</button>
+  </div>
+</div>
+<div class="row">
+  <div class="col-12">
+    <input (input)="searchPhrase.set($any($event).target.value)" [value]="searchPhrase()" placeholder="Search"
+      type="text" class="form-control">
   </div>
 </div>
 <div class="table-responsive small">
@@ -20,7 +26,7 @@
       @for (row of dataList(); track $index) {
       <tr>
         @for (col of columns(); track $index) {
-        <td>{{ row[col.key] }}</td>
+        <td>{{ row[col.key] | crypto}}</td>
         }
         <td>
           <div class="btn-group">
