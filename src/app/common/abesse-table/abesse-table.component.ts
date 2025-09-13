@@ -3,10 +3,14 @@ import {
   ChangeDetectionStrategy,
   Component,
   input,
+  OnInit,
   output,
   signal,
+  computed,
 } from '@angular/core';
 import { CryptoPipe } from '../../pipe/crypto.pipe';
+import { debounceTime, Subject } from 'rxjs';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 
 export interface IAbesseTableColumn {
   key: string;
@@ -15,12 +19,14 @@ export interface IAbesseTableColumn {
 
 @Component({
   selector: 'abesse-table',
-  imports: [NgClass, CryptoPipe],
+  imports: [NgClass, CryptoPipe, ReactiveFormsModule],
   templateUrl: './abesse-table.component.html',
   styleUrl: './abesse-table.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AbesseTableComponent<T extends { [k: string]: any; id: number }> {
+export class AbesseTableComponent<T extends { [k: string]: any; id: number }>
+  implements OnInit
+{
   dataList = input.required<T[]>();
 
   columns = input.required<IAbesseTableColumn[]>();
@@ -35,10 +41,38 @@ export class AbesseTableComponent<T extends { [k: string]: any; id: number }> {
 
   searchPhrase = signal<string>('');
 
+  phraseSubject = new Subject<string>();
+
+  phraseControl = new FormControl('');
+
+  filteredData = computed(() => {
+    const data = this.dataList();
+    const searchTerm = this.searchPhrase();
+
+    if (!data || !searchTerm || searchTerm.trim() === '') {
+      return data || [];
+    }
+
+    const term = searchTerm.toLowerCase().trim();
+    return data.filter(item =>
+      Object.values(item).some(value =>
+        value && value.toString().toLowerCase().includes(term)
+      )
+    );
+  });
+
   tableClasses = signal({
     'table-sm': true,
     'table-striped': true,
   });
+
+  ngOnInit(): void {
+    this.phraseControl.valueChanges
+      .pipe(debounceTime(1000))
+      .subscribe((phrase) => {
+        this.searchPhrase.set(phrase!);
+      });
+  }
 
   toggleClass() {
     this.btnClassSignal.update((className) =>

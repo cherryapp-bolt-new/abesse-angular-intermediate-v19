@@ -8,8 +8,8 @@
 </div>
 <div class="row">
   <div class="col-12">
-    <input (input)="searchPhrase.set($any($event).target.value)" [value]="searchPhrase()" placeholder="Search"
-      type="text" class="form-control">
+    <input [formControl]="phraseControl" placeholder="Search" type="text" class="form-control">
+    <span class="text-muted ms-2">Filtered: {{ filteredData().length }} of {{ dataList().length }}</span>
   </div>
 </div>
 <div class="table-responsive small">
@@ -23,7 +23,7 @@
       </tr>
     </thead>
     <tbody>
-      @for (row of dataList(); track $index) {
+      @for (row of filteredData(); track $index) {
       <tr>
         @for (col of columns(); track $index) {
         <td>{{ row[col.key] | crypto}}</td>
